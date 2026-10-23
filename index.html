@@ -1,0 +1,322 @@
+<!doctype html>
+<html lang="ja">
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>団長の手刀を見逃さないチャレンジ</title>
+<style>
+:root{color-scheme:dark;--bg:#101413;--panel:#19211e;--line:#36463e;--ink:#e6eee7;--muted:#9bafa1;--green:#b6ef91;--red:#ffab91}*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.65 system-ui,'Yu Gothic',sans-serif}main{max-width:1160px;margin:auto;padding:28px 24px 42px}header,.row{display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap}.eyebrow{font:12px monospace;letter-spacing:3px;color:var(--green)}h1{font-size:clamp(22px,4vw,38px);line-height:1.35;letter-spacing:.03em;margin:8px 0}p{margin:10px 0}.muted{color:var(--muted)}button,select,input{font:inherit}button,select{background:#222e27;color:var(--ink);border:1px solid #49604e;border-radius:5px;padding:10px 16px;cursor:pointer}button:hover:not(:disabled){background:#324438}button:focus-visible,input:focus-visible,select:focus-visible{outline:3px solid var(--green);outline-offset:4px}button:disabled{opacity:.45;cursor:default}.primary{background:var(--green);color:#152010;border-color:var(--green);font-weight:700}.primary:hover:not(:disabled){background:#cfffb0}.top{margin-bottom:25px}.status{display:flex;flex-wrap:wrap;gap:20px;padding:16px 0;margin:15px 0;border-top:1px solid var(--line);border-bottom:1px solid var(--line);font-family:monospace}.status strong{color:var(--green)}.wall{display:grid;gap:12px;grid-template-columns:repeat(var(--cols,2),minmax(0,1fr))}.monitor{position:relative;padding:0;border:1px solid #526258;background:#0d1612;overflow:hidden;border-radius:3px;aspect-ratio:16/10;display:block;width:100%;cursor:crosshair}.monitor canvas{width:100%;height:100%;display:block}.monitor .label{position:absolute;left:10px;top:6px;font:12px monospace;color:#cfdfd0;text-shadow:0 1px #000;pointer-events:none}.monitor .tag{position:absolute;right:10px;top:6px;font:11px monospace;color:#b6ef91;pointer-events:none}.monitor.selected{outline:3px solid var(--green);outline-offset:2px}.monitor:disabled{opacity:1}.console{margin-top:20px;padding:22px 24px;background:var(--panel);border-left:3px solid var(--green)}.quote{font-size:clamp(17px,2.4vw,24px);font-weight:600;min-height:1.5em}.controls{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-top:14px}.timeline{margin-top:16px}.timeline input{width:100%;accent-color:var(--green)}.small{font-size:12px}details{margin-top:24px;color:var(--muted)}summary{cursor:pointer}footer{margin-top:25px;color:var(--muted);font:11px monospace;letter-spacing:1px}.off{display:none!important}.steps{display:flex;gap:6px;flex-wrap:wrap}.step{width:24px;height:4px;background:#36463e}.step.done{background:var(--green)}.bad{color:var(--red)}.reward{border:1px solid var(--green);padding:26px;margin:18px 0;text-align:center;letter-spacing:.12em}.reward h2{font-size:25px}.timer{font-variant-numeric:tabular-nums}#replayBox{max-width:720px;margin:16px auto}#replayBox canvas{width:100%;aspect-ratio:16/10;display:block;background:#0d1612}label{cursor:pointer}.rules{max-width:720px}.hero-num{font:12px monospace;color:var(--muted)}@media(max-width:600px){main{padding:18px 12px}.wall{gap:8px}.monitor .label{left:5px;font-size:10px}.monitor .tag{right:5px;font-size:10px}.console{padding:16px}.status{gap:12px}.wall.many{grid-template-columns:repeat(2,minmax(0,1fr))}button{min-height:44px}}
+.replay-tools,.replay-buttons{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin:12px 0}.replay-tools label,.replay-buttons label{display:flex;align-items:center;gap:8px;flex-wrap:wrap}.replay-tools{padding-bottom:12px;border-bottom:1px solid var(--line)}.replay-buttons button{padding:8px 12px}.replay-buttons select{padding:8px}#source{max-width:100%}.monitor .label{max-width:calc(100% - 85px);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.wall[style="--cols: 1;"]{max-width:850px;margin-inline:auto}@media(max-width:600px){.replay-buttons{gap:8px}.replay-tools label{width:100%}.monitor .label{font-size:10px;max-width:calc(100% - 64px)}.console .quote{font-size:18px}}
+.touch-guide{position:absolute;left:50%;bottom:9%;transform:translateX(-50%);width:max-content;max-width:94%;padding:10px 18px;border:1px solid #b6ef91;background:#101413ed;color:#d7ffb9;font-size:clamp(13px,2.5vw,23px);font-weight:700;text-align:center;pointer-events:none;line-height:1.5}.touch-guide small{display:block;font-size:clamp(11px,1.5vw,14px);font-weight:400;color:#e6eee7}.reward h2{font-size:clamp(19px,3vw,28px);overflow-wrap:anywhere}@media(max-width:600px){.touch-guide{padding:8px 10px}}
+.start-cue,.play-flash{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;pointer-events:none}.media-disc{width:76px;height:76px;border:1px solid #d9f4ce;background:#101413df;border-radius:50%;display:flex;align-items:center;justify-content:center;box-shadow:0 3px 20px #0008}.pause-symbol{width:22px;height:27px;border-left:7px solid #d9f4ce;border-right:7px solid #d9f4ce}.play-symbol{width:0;height:0;border-top:15px solid transparent;border-bottom:15px solid transparent;border-left:23px solid #d9f4ce;margin-left:5px}.start-caption{padding:3px 12px;background:#101413df;color:#e6eee7;border-radius:4px;font-size:15px}.monitor:has(.start-cue){cursor:pointer}.touch-guide{font-size:clamp(13px,2.3vw,22px);bottom:7%;max-width:94%;padding:9px 14px}.play-flash{animation:play-feedback .6s ease-out both}@keyframes play-feedback{0%,45%{opacity:1}100%{opacity:0}}@media(prefers-reduced-motion:reduce){.play-flash{animation:none}}@media(max-width:600px){.media-disc{width:60px;height:60px}.start-caption{font-size:13px}.touch-guide{font-size:13px;padding:8px 10px}}
+</style>
+<style>
+.replay-sources{display:flex;gap:8px;flex-wrap:wrap}.replay-sources button{padding:8px 12px}.reaction-result,.stage-score{margin:12px 0;padding:10px 14px;border-left:3px solid var(--green);background:#202c24;color:var(--green);font-weight:700;font-variant-numeric:tabular-nums}.touch-guide small{margin-top:3px}.header-actions{display:flex;align-items:center;gap:14px}.header-actions button{padding:7px 12px}.rank-portrait{width:112px;height:112px;object-fit:cover;border:2px solid var(--green);border-radius:50%;margin:12px auto 4px}.rank-score{font-size:clamp(22px,4vw,34px);font-weight:800;color:var(--green);margin:4px 0}.tutorial-backdrop{position:fixed;inset:0;z-index:10;background:#080d0bd9;display:grid;place-items:center;padding:18px}.tutorial-card{width:min(680px,100%);max-height:min(90vh,820px);overflow:auto;padding:clamp(20px,5vw,36px);background:var(--panel);border:1px solid #647c68;border-top:4px solid var(--green);box-shadow:0 18px 60px #000b}.tutorial-card h2{font-size:clamp(22px,4vw,32px);line-height:1.35;margin:8px 0 16px}.tutorial-card p{font-size:16px}.tutorial-progress{height:4px;background:linear-gradient(90deg,var(--green) var(--progress,25%),#36463e var(--progress,25%));margin:12px 0 20px}.tutorial-visual{display:flex;align-items:center;justify-content:center;gap:clamp(10px,4vw,30px);min-height:108px;margin:12px 0 18px;padding:16px;background:#0d1612;border:1px solid var(--line);text-align:center}.tutorial-role{flex:1;max-width:210px;padding:12px;border:1px solid #526258;background:#19211e}.tutorial-role strong{display:block;color:var(--green);font-size:20px}.tutorial-arrow{font-size:clamp(22px,5vw,38px);color:var(--green)}.tutorial-demo{font-size:clamp(16px,3vw,23px);font-weight:800;line-height:1.5}.tutorial-demo span{display:block;color:var(--green)}.tutorial-actions{display:flex;justify-content:space-between;align-items:center;margin-top:22px}.tutorial-actions>div{display:flex;gap:8px}.tutorial-actions button{min-height:44px}.tutorial-card button:disabled{display:none}@media(max-width:520px){.header-actions{width:100%;justify-content:space-between}.tutorial-visual{gap:6px;padding:10px}.tutorial-role{padding:8px 4px;font-size:12px}.tutorial-role strong{font-size:17px}}
+</style>
+<style>.status-score{margin-left:auto;color:var(--green);font-weight:800}.tutorial-cast{display:flex;align-items:end;justify-content:center;gap:clamp(10px,6vw,46px);width:100%}.tutorial-character{display:flex;flex-direction:column;align-items:center;min-width:120px}.tutorial-character canvas{width:132px;height:118px;image-rendering:auto}.tutorial-character strong{font-size:18px;color:var(--green)}.tutorial-character small{color:var(--muted)}.tutorial-chop{width:100%;max-width:480px}.tutorial-chop canvas{width:100%;height:auto;display:block;background:#101713;border:1px solid #526258}.tutorial-chop-label{padding:6px 2px 0;color:var(--green);font-weight:700}@media(max-width:520px){.status-score{margin-left:auto}.tutorial-character{min-width:90px}.tutorial-character canvas{width:105px;height:100px}}</style>
+<main>
+<header class="top"><div><div class="eyebrow">SURVEILLANCE ROOM / CHALLENGE 010</div><h1>団長の手刀を<br>見逃さないチャレンジ</h1></div><div class="header-actions"><button id="help" type="button">遊び方</button><label class="small muted"><input type="checkbox" id="voice"> 台詞を読み上げる</label></div></header>
+<div class="row"><span class="hero-num">倒れた。その直前に、何があった？</span><div class="steps" id="steps" aria-label="全10面の進行"></div></div>
+<div class="status"><span>STAGE <strong id="stage">01 / 10</strong></span><span>CAM <strong id="cams">1</strong></span><span>手刀 <strong id="frames">20F / 60fps</strong></span><span id="scenario">会話の途中</span><span id="clock" class="timer">STANDBY</span><span>連続 <strong id="streak">0</strong></span><span class="status-score">SCORE <strong id="score">0</strong></span></div>
+<div id="wall" class="wall" style="--cols:1"></div>
+<section class="console"><div id="mode" class="eyebrow">READY TO OBSERVE</div><div id="quote" class="quote" aria-live="polite">その一瞬を、見逃すな。</div><p id="hint" class="muted">人物ではなく、手刀が映ったモニター全体をタップ。直前2秒の映像で確かめる。</p>
+<div id="replayBox" class="off">
+<div id="resultTools" class="replay-tools off"><div id="replaySources" class="replay-sources" role="group" aria-label="見返す映像"><button type="button" id="showSelected" aria-pressed="true">自分が止めた映像</button><button type="button" id="showAnswer" aria-pressed="false">正解映像</button></div><label><input type="checkbox" id="mark" checked> 手刀の位置を表示</label></div>
+<p id="sourceDescription" class="small muted">タップしたモニターの、停止時点までの映像です。</p>
+<p id="reactionResult" class="reaction-result off" aria-live="polite"></p>
+<p id="stageScore" class="stage-score off" aria-live="polite"></p>
+<p id="replayTitle" class="small muted"></p>
+<canvas id="replay" width="800" height="500" aria-label="選択した映像のリプレイ"></canvas>
+<div class="timeline"><div class="row small"><span id="replayLabel">◀◀ REWIND</span><span id="offset">−0.00 s</span></div><input id="seek" type="range" min="0" max="2" step="0.001" value="2" aria-label="リプレイ映像の時刻"></div>
+<div class="replay-buttons"><button id="restart">最初から再生</button><button id="play">再生</button><label>速度 <select id="speed"><option value="1">通常 ×1</option><option value="0.5" selected>スロー ×0.5</option><option value="0.25">超スロー ×0.25</option></select></label><button id="prevFrame" aria-label="1フレーム戻す">−1F</button><button id="nextFrame" aria-label="1フレーム進める">＋1F</button></div>
+</div>
+<div id="reward" class="reward off"><div id="rankEyebrow" class="eyebrow">OBSERVATION CERTIFICATE</div><img id="rankPortrait" class="rank-portrait" alt=""><h2 id="rankTitle">団長の手刀を見逃さなかった人 レベル</h2><p id="rankScore" class="rank-score"></p><p id="record" class="small muted"></p></div>
+<div class="controls"><button id="main" class="primary">監視を始める</button><button id="retry" class="off">この面をやり直す</button><button id="download" class="off">認定証を保存</button><button id="reset" class="off">最初からやり直す</button><button id="pause" class="off">一時停止</button></div>
+</section>
+<details open id="rules"><summary>遊び方・採点ルール</summary><div class="rules">
+<p>初回はチュートリアルが表示されます。スキップでき、ヘッダーの「遊び方」から何度でも見返せます。</p>
+<p>① 映像中央をタップすると監視開始。「監視を始める」ボタンでも開始できる。黒いコートの人物の手が首元を通り、相手が崩れ落ちる。手刀を見つけたら、倒れた人ではなく、その手刀が映ったモニター全体を素早くタップ。</p>
+<p>② 選んだ画面を停止し、直前2秒だけを巻き戻して自動判定。その2秒に手刀があれば成功。「次のステージへ」で先に進もう。早押し・別カメラ・貧血への誤反応は失敗。</p>
+<p>③ 成功後は自分が止めた映像を見返せる。失敗時だけ「正解映像」ボタンが現れ、本物の手刀の前後を確認できる。成功時は手刀からタップまでの時間、獲得点、現在の連続成功数を表示。</p>
+<p>④ 正解は基本100点。反応が速いほどボーナスが高くなり、0.30秒以内で+50点、2.00秒で+0点（1.99秒なら+1点）。2回目以降の連続成功は各+20点。1面からミスなく続けると、6面+10点、7面+20点、8面+50点、9面+90点、10面+150点の連続クリアボーナス。ミスで連続数とボーナスの流れがリセットされる。挑戦を終えると、その時点の合計スコアに応じた総合レベルが表示される。</p>
+<p>本物の手刀では必ず相手が倒れる。腕回し・挨拶・指差しなどの仕草や、折れたヒール・靴ひも・立ちくらみ・滑る床による転倒もある。後半は別室での同時転倒も増える。手刀の速さと画面数は前の版のまま。</p>
+<p>数字キー1〜9で画面選択。Spaceで監視の一時停止、リプレイ中は再生・停止。← →で1フレーム移動。各面に本物は1回。20Fから2Fは60fps基準の長さで、実際の描画は端末の性能によります。別タブでは自動停止。読み上げは端末の音声機能を使います。</p>
+</div></details>
+<footer>UNOFFICIAL FAN PROTOTYPE / ORIGINAL SILHOUETTE ANIMATION / USER-SUPPLIED RANK PORTRAITS</footer>
+</main>
+<div id="tutorial" class="tutorial-backdrop off" role="dialog" aria-modal="true" aria-labelledby="tutorialHeading"><section class="tutorial-card"><div class="eyebrow">FIRST-TIME BRIEFING</div><div class="tutorial-progress" id="tutorialProgress"></div><h2 id="tutorialHeading"></h2><div id="tutorialVisual" class="tutorial-visual"></div><p id="tutorialCopy"></p><div class="tutorial-actions"><button id="tutorialSkip" type="button">スキップ</button><div><button id="tutorialPrev" type="button">戻る</button> <button id="tutorialNext" class="primary" type="button">次へ</button></div></div></section></div>
+<script id="engine">
+const LEVELS=[
+ {n:1,f:20,title:'会話の途中',note:'まずは一組。会話中の腕と、その直後の転倒を見よう。'},
+ {n:2,f:16,title:'別々の部屋',note:'二つの場所で人が動く。倒れた瞬間の、その直前に注目。'},
+ {n:2,f:12,title:'倒れた理由',note:'貧血で倒れる人もいる。手刀から転倒につながる一組を見抜け。'},
+ {n:3,f:10,title:'すれ違いざま',note:'立ち話だけとは限らない。近づき、すれ違う瞬間にも注意。'},
+ {n:4,f:8,title:'二つの転倒',note:'別の部屋でもほぼ同時に人が倒れる。腕が動いたのはどちらだ。'},
+ {n:4,f:6,title:'日常の中の一瞬',note:'歩く、手を振る、物を運ぶ。その間の短い手刀を見抜け。'},
+ {n:6,f:5,title:'紛らわしい仕草',note:'案内や挨拶で腕が上がる。本物は相手の首元を通り、転倒を起こす。'},
+ {n:6,f:4,title:'左右に目を配れ',note:'手刀の向きも立ち位置も違う。倒れた人と、隣の手を結びつけろ。'},
+ {n:8,f:3,title:'交差する人影',note:'人の行き交う場面が増える。標的が崩れる直前の接触を追え。'},
+ {n:9,f:2,title:'見逃さなかった人',note:'九つの場所、いくつもの日常。その一瞬の原因を見届けろ。'}
+];
+const SCENES=[
+ {name:'ラウンジ',code:'LOUNGE',set:'lounge',x:364,y:385,dir:1,pair:'talk',cast:2},
+ {name:'連絡通路',code:'CORRIDOR',set:'corridor',x:405,y:390,dir:-1,pair:'cross',cast:1},
+ {name:'エレベーターホール',code:'ELEVATOR',set:'elevator',x:440,y:395,dir:1,pair:'wait',cast:0},
+ {name:'絵画ギャラリー',code:'GALLERY',set:'gallery',x:350,y:389,dir:1,pair:'look',cast:1},
+ {name:'屋上テラス',code:'TERRACE',set:'terrace',x:445,y:394,dir:-1,pair:'talk',cast:2},
+ {name:'ホテル受付',code:'RECEPTION',set:'reception',x:362,y:398,dir:1,pair:'wait',cast:1},
+ {name:'階段の踊り場',code:'STAIRWELL',set:'stairs',x:432,y:400,dir:-1,pair:'cross',cast:0},
+ {name:'カフェ',code:'CAFE',set:'cafe',x:360,y:403,dir:1,pair:'talk',cast:2},
+ {name:'資料室',code:'ARCHIVE',set:'archive',x:445,y:399,dir:-1,pair:'look',cast:1}
+];
+const FEINTS={
+ stretch:{label:'腕回し',lines:['おっと、これは手刀ではない。座りっぱなしで固まった肩を、ぐるっとほぐしただけだ。','おっと、これは手刀ではない。待ち時間に腕を回していただけだ。監視より健康に気を配るとはな。']},
+ wave:{label:'手を振る仕草',lines:['おっと、これは手刀ではない。知り合いを見つけて手を振っただけだ。人付き合いまで疑うな。','おっと、これは手刀ではない。向こうの誰かに挨拶しただけだ。ずいぶん物騒な読み違いだな。']},
+ point:{label:'指差し',lines:['おっと、これは手刀ではない。「あっちです」と指を差しただけだ。道案内にも命懸けか。','おっと、これは手刀ではない。気になるものを指差しただけだ。その指先に殺気はない。']},
+ scratch:{label:'頭をかく仕草',lines:['おっと、これは手刀ではない。頭がかゆくて、かいただけだ。念入りに見るほどのことでもない。','おっと、これは手刀ではない。考え事をしながら頭をかいただけだ。こっちまで悩ましくなるな。']},
+ reach:{label:'背伸び',lines:['おっと、これは手刀ではない。両手を上げて伸びをしただけだ。長い待ち時間だったんだろう。','おっと、これは手刀ではない。背筋を伸ばしていただけだ。姿勢のよさまで見逃せないとはな。']},
+ heel:{label:'折れたヒール',lines:['おっと、これは手刀ではない。ヒールが折れて倒れてしまっただけだ。靴選びの方を見直すべきだったな。','おっと、これは手刀ではない。相手を倒したのは団長ではなく、寿命を迎えたヒールだ。']},
+ trip:{label:'靴ひもにつまずいた転倒',lines:['おっと、これは手刀ではない。自分の靴ひもにつまずいただけだ。足元の警戒が足りなかったな。','おっと、これは手刀ではない。ほどけた靴ひもが足に絡んだだけだ。まずは結び直してもらおう。']},
+ faint:{label:'立ちくらみ',lines:['おっと、これは手刀ではない。立ちくらみで倒れただけだ。手刀を探す前に、椅子を探してやれ。','おっと、これは手刀ではない。ふらついて倒れただけだ。隣の人物は、まだ何もしていない。']},
+ slip:{label:'足を滑らせた転倒',lines:['おっと、これは手刀ではない。床で足を滑らせただけだ。ここで恐ろしいのは床の方だな。','おっと、これは手刀ではない。濡れた床に足を取られただけだ。清掃中の札が必要だったな。']}
+};
+function decorateFeints(events,scenes,rng){
+ const gestures={lounge:['stretch','wave','scratch'],corridor:['wave','point','stretch'],elevator:['stretch','reach','scratch'],gallery:['point','scratch','reach'],terrace:['stretch','wave','reach'],reception:['point','wave','scratch'],stairs:['stretch','point','wave'],cafe:['wave','stretch','scratch'],archive:['reach','point','scratch']};
+ for(const e of events){if(e.kind==='chop')continue;const choices=e.kind==='faint'?['heel','trip','faint','slip']:gestures[scenes[e.cam].set];e.reason=choices[Math.min(choices.length-1,Math.floor(rng()*choices.length))];const lines=FEINTS[e.reason].lines;e.message=lines[Math.min(lines.length-1,Math.floor(rng()*lines.length))];}
+}
+function falseAlarmMessage(round,cam,stop){
+ const occurred=round.events.filter(e=>e.cam===cam&&e.kind!=='chop'&&e.at<=stop);
+ const current=occurred.filter(e=>stop<=e.at+(e.kind==='faint'?.85:e.duration));
+ const recent=occurred.filter(e=>e.at+(e.duration||0)>=stop-2);
+ const fallen=occurred.filter(e=>e.kind==='faint');
+ const event=[current,recent,fallen].find(list=>list.length)?.slice().sort((a,b)=>b.at-a.at)[0];
+ if(event)return event.message;
+ if(round.events.some(e=>e.cam===cam&&e.kind==='chop'&&e.at+(e.duration||0)<stop-2))return '手刀はあった。だが、止めるのが遅かった。証拠はもう、この2秒の外だ。';
+ const idle={lounge:'ただ立ち話をしているだけだ。会話にまで殺気を感じたか。',corridor:'通路を歩いているだけだ。すれ違う全員を疑っていては忙しいな。',elevator:'エレベーターを待っているだけだ。到着より先に結論を急ぐな。',gallery:'絵を眺めているだけだ。事件より先に、作品を鑑賞していたようだ。',terrace:'景色を眺めているだけだ。風当たりまで手刀には見えないだろう。',reception:'受付で順番を待っているだけだ。疑う前に、呼ばれるのを待とう。',stairs:'踊り場を通っただけだ。階段より先に、判断を踏み外したな。',cafe:'カフェで一息ついているだけだ。その一杯にまで気を張らなくていい。',archive:'資料を探しているだけだ。お目当ては相手の首ではなく、本の背だ。'};
+ return 'おっと、これは手刀ではない。'+idle[round.scenes[cam].set];
+}
+function makeRound(level,rng=Math.random,tutorial=false){
+ const config=LEVELS[level-1],cam=Math.min(config.n-1,Math.floor(rng()*config.n)),at=tutorial?5.5+rng():5+rng()*5;
+ const scenes=Array.from({length:config.n},(_,i)=>({...SCENES[(i+(level===1?0:level-1))%9]}));
+ const events=[{cam,at,kind:'chop',actor:0,target:1,fall:true,duration:config.f/60}];
+ // A target has only one causal event. Never schedule a faint on the struck target.
+ for(let i=0;i<config.n;i++){
+  if(i===cam){events.push({cam:i,at:1.3+rng(),kind:'gesture',actor:0,duration:.8});continue;}
+  const distance=(i-cam+config.n)%config.n;
+  const canFaint=level>=3&&(distance===1||(level>=7&&distance===3)||(level>=9&&distance===6));
+  if(canFaint){const near=level>=5&&(i===((cam+1)%config.n));events.push({cam:i,at:near?at+.08:2.8+rng()*6,kind:'faint',target:1,fall:true,duration:.65});}
+  if(!canFaint||level>=6)events.push({cam:i,at:canFaint?.6+rng()*.6:3.4+rng()*5,kind:level>=7?'reach':'gesture',actor:0,duration:.8});
+ }
+ decorateFeints(events,scenes,rng);
+ return {events,cam,at,scenes,level,tutorial,end:at+config.f/60+2};
+}
+function findChop(events,cam,time){return events.find(e=>e.kind==='chop'&&e.cam===cam&&e.at<=time&&e.at+(e.duration||0)+1e-9>=time-2);}
+function sceneState(round,cam,t){
+ const scene=round.scenes[cam],event=round.events.find(e=>e.cam===cam&&(e.kind==='chop'||e.kind==='faint'));
+ const pairAt=event?event.at:6,elapsed=t-pairAt;
+ let separation=82,pairX=scene.x;
+ if(scene.pair==='cross'){separation=82+Math.min(95,Math.max(0,-elapsed)*32);pairX+=Math.min(0,Math.max(-60,elapsed*15));}
+ if(scene.pair==='wait')separation+=Math.min(45,Math.max(0,-elapsed-1)*12);
+ let attack=null,fall=0,faint=false,gesture=null;
+ for(const e of round.events.filter(e=>e.cam===cam)){
+  const dt=t-e.at;
+  if(e.kind==='chop'){
+   if(dt>=0&&dt<e.duration)attack={phase:dt/e.duration,actor:e.actor,target:e.target};
+   const since=t-(e.at+e.duration*.72);
+   if(since>=0)fall=Math.min(1,since/.72);
+  }else if(e.kind==='faint'){
+   if(e.reason==='faint'&&dt>-.7&&dt<0)faint=true;
+   if(dt>=0)fall=Math.min(1,dt/.85);
+  }else if(dt>=0&&dt<e.duration)gesture={kind:e.kind,reason:e.reason,phase:dt/e.duration};
+ }
+ return {scene,event,pairX,separation,attack,fall,faint,gesture};
+}
+
+</script>
+<script>
+(()=>{'use strict';
+ const $=id=>document.getElementById(id),show=(id,on)=>$(id).classList.toggle('off',!on);
+ let level=1,state='ready',time=0,round=makeRound(1),last=0,selected=0,stop=0,view=0,replayMode='',paused=false,failures=0,reactions=[],source='selected',rangeFrom=0,rangeTo=2,score=0,earnedScore=0,penaltyPoints=0,streak=0,missedRound=false,tutorialStep=0,tutorialAnimationFrame=0,tutorialAnimationStart=0;
+ let canvases=[];let firstVisit=true,guideStarted=false,guideActive=false;
+ try{firstVisit=localStorage.getItem('hand-chop-tutorial-v1')!=='seen';}catch{}
+ const hasReplay=()=>['review','success','failed','summary','complete'].includes(state);
+ const isResult=()=>['success','failed','summary','complete'].includes(state);
+ const TUTORIAL_STEPS=[
+  {title:'今回の任務',visual:'<div class="tutorial-demo">団長の手刀で占い師が倒れる<br><span>その一瞬を監視映像から見つけよう</span></div>',copy:'全10ステージをクリアし、手刀を見逃さずにタップするのが目的です。スコアは反応の速さと連続成功で伸びます。'},
+  {title:'誰を見ればいい？',visual:'<div class="tutorial-cast"><div class="tutorial-character"><canvas id="tutorialLeader" width="180" height="160" aria-label="黒いコートの団長"></canvas><strong>団長</strong><small>攻撃する側</small></div><div class="tutorial-arrow">→</div><div class="tutorial-character"><canvas id="tutorialFortune" width="180" height="160" aria-label="占い師ネオン"></canvas><strong>占い師</strong><small>標的・倒れる側</small></div></div>',copy:''},
+  {title:'手刀とは？',visual:'<div class="tutorial-chop"><canvas id="tutorialChop" width="480" height="230" aria-label="団長の手が占い師の首元を通り、占い師が倒れる短い実演"></canvas><div class="tutorial-chop-label">団長の手刀 → 首元 → 占い師が倒れる</div></div>',copy:''},
+  {title:'操作とルール',visual:'<div class="tutorial-demo">手刀を発見！<span>その映像モニター全体をタップ</span></div>',copy:'最初に映像中央をタップして再生。手刀を見つけたら、倒れた人物ではなく、その場面が映るモニター全体を素早くタップします。選んだ画面の直前2秒だけで自動判定。別の画面を選ぶ、フェイントに反応する、遅れて範囲外になるとミスです。'},
+  {title:'10面クリアで認定',visual:'<div class="tutorial-demo">SCORE と連続成功を伸ばそう<span>速く見つけて、10ステージを完遂</span></div>',copy:'正解で基本100点。0.30秒以内の反応は+50点、2.00秒は+0点、1.99秒は+1点。間はなだらかに加点します。連続成功は各+20点。ミスは−50点で連続数もリセット。10面クリア時の合計点で認定ランクが決まります。準備ができたら映像をタップ。いつでも「遊び方」から見返せます。'}
+ ];
+ function renderTutorial(){const step=TUTORIAL_STEPS[tutorialStep];if(tutorialAnimationFrame)cancelAnimationFrame(tutorialAnimationFrame);$('tutorialHeading').textContent=step.title;$('tutorialVisual').innerHTML=step.visual;$('tutorialCopy').textContent=step.copy;$('tutorialCopy').classList.toggle('off',!step.copy);$('tutorialProgress').style.setProperty('--progress',((tutorialStep+1)/TUTORIAL_STEPS.length*100)+'%');$('tutorialProgress').setAttribute('aria-label','全'+TUTORIAL_STEPS.length+'項目中'+(tutorialStep+1)+'項目');$('tutorialPrev').disabled=tutorialStep===0;$('tutorialNext').textContent=tutorialStep===TUTORIAL_STEPS.length-1?'説明を終える':'次へ';if(tutorialStep===1){paintTutorialPerson('tutorialLeader','coat',1);paintTutorialPerson('tutorialFortune','target',-1);}if(tutorialStep===2){tutorialAnimationStart=performance.now();tutorialAnimationFrame=requestAnimationFrame(animateTutorialChop);}}
+ function paintTutorialPerson(id,style,direction){const canvas=$(id),c=canvas.getContext('2d');c.fillStyle='#394940';c.fillRect(0,0,canvas.width,canvas.height);c.save();c.scale(.78,.78);person(c,115,185,0,style,{dir:direction});c.restore();}
+ function animateTutorialChop(now){if($('tutorial').classList.contains('off')||tutorialStep!==2)return;const canvas=$('tutorialChop'),c=canvas.getContext('2d'),cycle=((now-tutorialAnimationStart)%2200)/2200,prep=.2,attackEnd=.45,fallEnd=.76;let attack=null,fall=0;if(cycle>=prep&&cycle<attackEnd)attack={phase:(cycle-prep)/(attackEnd-prep)};else if(cycle>=attackEnd)attack={phase:1};if(cycle>attackEnd)fall=Math.min(1,(cycle-attackEnd)/(fallEnd-attackEnd));c.fillStyle='#334536';c.fillRect(0,0,canvas.width,canvas.height);c.fillStyle='#24342c';c.fillRect(0,178,canvas.width,52);line(c,0,178,canvas.width,178,'#8b9a88',2);person(c,275,202,cycle*2,'target',{dir:-1,fall});person(c,195,202,cycle*2,'coat',{dir:1,attack});tutorialAnimationFrame=requestAnimationFrame(animateTutorialChop);}
+ function openTutorial(){if(state==='live'&&!paused)return;tutorialStep=0;renderTutorial();show('tutorial',true);$('tutorialNext').focus();}
+ function closeTutorial(){show('tutorial',false);if(tutorialAnimationFrame)cancelAnimationFrame(tutorialAnimationFrame);try{localStorage.setItem('hand-chop-tutorial-v1','seen');}catch{}firstVisit=false;}
+ function say(text){$('quote').textContent=text;if($('voice').checked&&'speechSynthesis'in window){speechSynthesis.cancel();const speech=new SpeechSynthesisUtterance(text);speech.lang='ja-JP';speech.rate=.95;speechSynthesis.speak(speech);}}
+ function controls(){
+  show('main',state==='ready'||state==='success'||state==='summary'||state==='complete');show('retry',state==='failed');show('reset',state==='failed');show('download',state==='complete');show('pause',state==='live');show('replayBox',hasReplay());show('reward',state==='summary'||state==='complete');show('resultTools',isResult());show('replaySources',state==='failed');show('showSelected',state==='failed'&&!missedRound);show('showAnswer',state==='failed');show('stageScore',state==='success'||state==='failed'||state==='summary'||state==='complete');$('help').disabled=state==='live'&&!paused;
+  $('main').textContent=state==='success'?'次のステージへ':state==='complete'||state==='summary'?'もう一度挑戦':'監視を始める';
+  for(const id of ['play','restart','prevFrame','nextFrame','speed','seek'])$(id).disabled=replayMode==='rewind';
+ }
+ function steps(){$('steps').innerHTML=LEVELS.map((_,i)=>'<span class="step '+(i<level-1||state==='complete'?'done':'')+'"></span>').join('');}
+ function wall(){
+  const cfg=LEVELS[level-1];$('stage').textContent=String(level).padStart(2,'0')+' / 10';$('cams').textContent=cfg.n;$('frames').textContent=cfg.f+'F / 60fps';$('scenario').textContent=cfg.title;
+  $('wall').style.setProperty('--cols',cfg.n===1?1:cfg.n<=4?2:3);$('wall').classList.toggle('many',cfg.n>4);$('wall').innerHTML='';canvases=[];
+  round.scenes.forEach((scene,i)=>{const b=document.createElement('button');b.className='monitor';b.setAttribute('aria-label','モニター'+(i+1)+'・'+scene.name+'をタップして映像を開始');b.innerHTML='<canvas width="800" height="500" aria-hidden="true"></canvas><span class="label">CAM '+String(i+1).padStart(2,'0')+' / '+scene.name+'</span><span class="tag">Ⅱ STANDBY</span><span class="start-cue" aria-hidden="true"><span class="media-disc"><span class="pause-symbol"></span></span><span class="start-caption">タップして開始</span></span>';b.onclick=()=>{if(state==='ready')start();else capture(i);};$('wall').appendChild(b);canvases.push(b.querySelector('canvas'));});steps();
+ }
+ function ready(){state='ready';time=0;paused=false;guideActive=false;missedRound=false;round=makeRound(level,Math.random,firstVisit&&!guideStarted&&level===1);replayMode='';source='selected';$('mark').checked=true;show('reactionResult',false);$('pause').textContent='一時停止';wall();controls();$('mode').textContent='READY TO OBSERVE';say(level===1?'倒れた。その直前に、何があった？':'その転倒の、原因を見抜け。');$('hint').textContent='映像中央をタップして開始。開始後は、手刀が映ったモニター全体をタップ。倒れた人を直接タップする必要はありません。';$('clock').textContent='STANDBY';render();}
+ function start(){
+  state='live';time=0;paused=false;guideActive=round.tutorial;
+  if(guideActive){guideStarted=true;try{localStorage.setItem('hand-chop-touch-guide-v2','seen');localStorage.setItem('hand-chop-tutorial-v1','seen');}catch{}}
+  document.querySelectorAll('.start-cue').forEach(el=>el.remove());
+  canvases.forEach((c,i)=>{const b=c.parentElement;b.setAttribute('aria-label','モニター'+(i+1)+'・'+round.scenes[i].name+'。手刀が映ったら、このモニター全体をタップして停止');b.querySelector('.tag').textContent='● LIVE';b.insertAdjacentHTML('beforeend','<span class="play-flash" aria-hidden="true"><span class="media-disc"><span class="play-symbol"></span></span></span>');if(guideActive)b.insertAdjacentHTML('beforeend','<span class="touch-guide">手刀が見えたら、このモニター全体をタップ！<small>人物ではなく、映像画面を押してください</small></span>');});
+  $('rules').open=false;controls();$('mode').textContent='MONITORING';say('監視中。');$('hint').textContent=guideActive?'人物ではなく、手刀が映ったモニター全体をタップ。直前2秒を巻き戻して自動判定。':LEVELS[level-1].note+' 手刀を見たら人物ではなく、その映像画面全体をタップ。';
+ }
+ function freezeTags(){guideActive=false;document.querySelectorAll('.touch-guide,.play-flash').forEach(el=>el.remove());canvases.forEach((c,j)=>{c.parentElement.classList.toggle('selected',selected===j);c.parentElement.querySelector('.tag').textContent='Ⅱ FREEZE';});}
+ function setSource(value){
+  source=value;replayMode='';$('showSelected').classList.toggle('primary',value==='selected');$('showSelected').setAttribute('aria-pressed',String(value==='selected'));$('showAnswer').classList.toggle('primary',value==='answer');$('showAnswer').setAttribute('aria-pressed',String(value==='answer'));$('sourceDescription').textContent=value==='answer'?'本物の手刀が起きたモニターで、手刀の少し前から直後までを再生します。':'あなたがタップしたモニターの映像です。停止した時点までの直前2秒を見返します。';
+  if(value==='answer'){rangeFrom=Math.max(0,round.at-1.2);rangeTo=round.at+1.8;view=rangeFrom;}
+  else {rangeFrom=Math.max(0,stop-2);rangeTo=stop;view=rangeFrom;}
+  $('seek').min=rangeFrom;$('seek').max=Math.max(rangeFrom,rangeTo);$('seek').value=view;
+  const cam=value==='answer'?round.cam:selected;$('replayTitle').textContent='CAM '+String(cam+1).padStart(2,'0')+' / '+round.scenes[cam].name+' / '+(value==='answer'?'正解映像（手刀の前後）':'自分が止めた映像（停止前2秒）');
+  controls();renderReplay();
+ }
+ function capture(i){if(state!=='live'||paused)return;selected=i;stop=time;state='review';freezeTags();setSource('selected');view=rangeTo;replayMode='rewind';$('mode').textContent='SELECTED CAM '+String(i+1).padStart(2,'0')+' / REVIEW';say('この画面だけを巻き戻して見ることはできるか？');$('hint').textContent='直前2秒を巻き戻し中。腕の動きから転倒へのつながりを確かめよう。';controls();}
+ function reactionBonusFor(ms){const bands=[[301,333,49,45],[334,366,44,39],[367,400,38,33],[401,444,32,27],[445,750,26,15],[751,1111,14,7],[1112,1999,6,1]];if(ms<=300)return 50;if(ms>=2000)return 0;const band=bands.find(([from,to])=>ms>=from&&ms<=to);if(!band)return 0;const [from,to,high,low]=band;return Math.round(high+(low-high)*(ms-from)/(to-from));}
+ function verdict(){
+  if(state!=='review'||replayMode==='rewind')return;
+  const event=findChop(round.events,selected,stop);replayMode='';
+  if(event){state='success';const reactionSeconds=Math.max(0,stop-event.at),reactionMs=Math.round(reactionSeconds*1000),reactionBonus=reactionBonusFor(reactionMs);streak++;const comboBonus=streak>1?20:0,stageClearBonus=streak===level?STAGE_CLEAR_BONUS[level]:0,stagePoints=100+reactionBonus+comboBonus+stageClearBonus;earnedScore+=stagePoints;score=Math.max(0,earnedScore-penaltyPoints);reactions.push(reactionMs);$('score').textContent=score.toLocaleString('ja-JP');$('streak').textContent=streak;$('reactionResult').textContent='あなたの反応：手刀の開始から '+(reactionMs/1000).toFixed(3)+' 秒後にタップ';show('reactionResult',true);$('stageScore').textContent='正解 +100 ／ 反応 +'+reactionBonus+' ／ 連続成功 +'+comboBonus+' ／ 連続クリア +'+stageClearBonus+'　→ 今回 +'+stagePoints+'点';$('mode').textContent='EVIDENCE CONFIRMED';say('おそろしく速い手刀　オレでなきゃ見逃しちゃうね');$('hint').textContent='自分が止めた映像を見返せます。';if(level===10)complete();setSource('selected');replayMode='play';}
+  else fail(falseAlarmMessage(round,selected,stop),false);
+  controls();
+ }
+ function fail(message,missed){state='failed';failures++;penaltyPoints+=50;score=Math.max(0,earnedScore-penaltyPoints);streak=0;missedRound=missed;$('score').textContent=score.toLocaleString('ja-JP');$('streak').textContent='0';$('stageScore').textContent='ミス −50点 ／ 連続成功が途切れました　→ 現在 '+score+'点';replayMode='';show('reactionResult',false);$('mode').textContent=missed?'MISSED / GAME OVER':'FALSE ALARM / GAME OVER';say(message);if(missed){selected=round.cam;stop=time;freezeTags();const lateMs=Math.max(0,Math.round((time-round.at)*1000));$('reactionResult').textContent='手刀の開始から '+(lateMs/1000).toFixed(3)+' 秒経過。巻き戻せる範囲を過ぎました。';show('reactionResult',true);}$('hint').textContent=missed?'CAM '+(round.cam+1)+'で、手刀の直後に相手が倒れていた。正解映像を再生して確かめよう。':'転倒だけでは手刀の証拠にならない。自分の映像と正解映像を見比べよう。';setSource(missed?'answer':'selected');replayMode='play';controls();}
+ const STAGE_CLEAR_BONUS=[0,0,0,0,0,0,10,20,50,90,150];
+ const RANKS=[
+  {min:1980,title:'まるでゴッコじゃの…と嘲笑した人 レベル',image:'ranks/rank-hidden.jpg'},
+  {min:1500,title:'団長の手刀を見逃さなかった人 レベル',image:'ranks/rank-chodan.jpg'},
+  {min:1400,title:'ベンニー＝ドロン（ベンズナイフの作者）レベル',image:'ranks/rank-bennydoron.jpg'},
+  {min:1300,title:'組みたい奴は組めばいいさと冷笑した人 レベル',image:'ranks/rank-cold.jpg'},
+  {min:1200,title:'ブルー レベル',image:'ranks/rank-blue.jpg'},
+  {min:1100,title:'レッド レベル',image:'ranks/rank-red.jpg'},
+  {min:1000,title:'連絡の際の呼び名を決めておこうかと提案した人 レベル',image:'ranks/rank-callsign.jpg'},
+  {min:0,title:'呼び方は色でいいだろうと提案した人 レベル',image:'ranks/rank-color.jpg'}
+ ];
+ function showOverallRank(kind='final'){const rank=RANKS.find(item=>score>=item.min)||RANKS[RANKS.length-1];$('rankEyebrow').textContent=kind==='complete'?'OBSERVATION CERTIFICATE':'FINAL OBSERVATION LEVEL';$('rankTitle').textContent=rank.title;$('rankPortrait').src=rank.image;$('rankPortrait').alt=rank.title;$('rankScore').textContent=score.toLocaleString('ja-JP')+' 点';$('record').textContent=(kind==='complete'?'10 / 10面クリア':'ステージ '+String(level).padStart(2,'0')+' 到達 ・ 挑戦終了')+' ・ ミス '+failures+'回'+(reactions.length?' ・ 平均反応 '+Math.round(reactions.reduce((a,b)=>a+b,0)/reactions.length)+' ms':'');}
+ function finalizeRun(){state='summary';$('mode').textContent='RUN ENDED';$('hint').textContent='今回の挑戦での総合レベルです。もう一度挑戦できます。';showOverallRank('final');controls();}
+ function complete(){state='complete';steps();$('mode').textContent='ALL 10 STAGES CLEARED';$('hint').textContent='全10面をクリア。あなたの反応と連続成功が認定ランクになりました。';showOverallRank('complete');}
+ function togglePause(){if(state!=='live')return;paused=!paused;$('pause').textContent=paused?'監視を再開':'一時停止';$('clock').textContent=paused?'Ⅱ PAUSED':time.toFixed(2)+' s';controls();}
+ function line(c,x1,y1,x2,y2,color,width=3){c.strokeStyle=color;c.lineWidth=width;c.beginPath();c.moveTo(x1,y1);c.lineTo(x2,y2);c.stroke();}
+ function rect(c,x,y,w,h,fill){c.fillStyle=fill;c.fillRect(x,y,w,h);}
+ function ellipse(c,x,y,rx,ry,fill){c.fillStyle=fill;c.beginPath();c.ellipse(x,y,rx,ry,0,0,Math.PI*2);c.fill();}
+ function door(c,x,y,w,h){rect(c,x,y,w,h,'#52615a');rect(c,x+6,y+6,w-12,h-6,'#1c2827');rect(c,x+w-20,y+h*.55,5,5,'#a4a78d');}
+ function plant(c,x,y){rect(c,x-13,y-4,26,35,'#5a5d49');for(let j=-2;j<=2;j++)ellipse(c,x+j*12,y-27-Math.abs(j)*3,10,28,'#49654c');}
+ function drawSet(c,scene){
+  const palettes={lounge:['#334536','#17251d'],corridor:['#33434b','#17252c'],elevator:['#42464b','#222a2e'],gallery:['#4b453d','#29261e'],terrace:['#273d50','#16252f'],reception:['#4a3c36','#2a211d'],stairs:['#394543','#1c2825'],cafe:['#494333','#292b20'],archive:['#3e3c39','#262423']},p=palettes[scene.set];
+  const bg=c.createLinearGradient(0,0,0,500);bg.addColorStop(0,p[0]);bg.addColorStop(1,p[1]);c.fillStyle=bg;c.fillRect(0,0,800,500);rect(c,0,305,800,195,p[1]);
+  for(let j=0;j<4;j++)line(c,0,325+j*47,800,325+j*47,'#ffffff0c',1);for(let x=-200;x<1000;x+=170)line(c,400,280,x,500,'#ffffff0d',1);
+  switch(scene.set){
+   case 'lounge':
+    rect(c,65,65,230,125,'#6b7257');rect(c,74,74,212,107,'#263e34');for(let j=0;j<3;j++)rect(c,90+j*64,85,45,80,'#4b5c48');
+    rect(c,65,256,250,65,'#3c5143');rect(c,55,288,270,37,'#4d6252');rect(c,70,320,16,20,'#192b22');rect(c,294,320,16,20,'#192b22');
+    rect(c,605,87,7,225,'#a29775');ellipse(c,609,103,47,24,'#aeaa86');plant(c,710,281);break;
+   case 'corridor':
+    c.fillStyle='#4d5c60';c.beginPath();c.moveTo(0,0);c.lineTo(285,143);c.lineTo(285,309);c.lineTo(0,427);c.fill();c.fillStyle='#35454b';c.beginPath();c.moveTo(800,0);c.lineTo(515,143);c.lineTo(515,309);c.lineTo(800,427);c.fill();
+    door(c,70,115,90,215);door(c,205,151,55,160);door(c,540,151,55,160);door(c,640,115,90,215);rect(c,300,142,200,168,'#25383f');rect(c,350,172,100,137,'#101d25');for(let j=0;j<3;j++)rect(c,365-j*100,34+j*35,70+j*30,6,'#a8bdb7');break;
+   case 'elevator':
+    for(let i=0;i<2;i++){rect(c,110+i*350,69,230,246,'#66706d');rect(c,122+i*350,83,206,228,'#364245');line(c,225+i*350,84,225+i*350,311,'#89928a',3);rect(c,188+i*350,43,75,24,'#152322');c.fillStyle='#b5c7a0';c.font='17px monospace';c.fillText(i?'↓ 08':'↑ 12',197+i*350,61);rect(c,355+i*350,185,18,41,'#8b968a');}break;
+   case 'gallery':
+    for(let j=0;j<3;j++){rect(c,80+j*245,73,155,154,'#84795d');rect(c,89+j*245,82,137,136,'#1f302c');ellipse(c,156+j*245,133,41,34,['#61715c','#566b77','#7c6659'][j]);rect(c,105+j*245,177,107,25,'#3a5046');rect(c,125+j*245,244,65,8,'#b1aa92');}rect(c,250,299,265,12,'#75674c');rect(c,270,311,12,38,'#4c483b');rect(c,480,311,12,38,'#4c483b');break;
+   case 'terrace':
+    rect(c,0,30,800,219,'#263b4b');ellipse(c,650,75,27,27,'#a2b7b3');for(let i=0;i<13;i++){const h=35+(i*29)%98;rect(c,i*66,249-h,52,h,'#152a34');for(let k=0;k<3;k++)rect(c,i*66+9+k*12,240-h,4,5,'#8d9a7a');}
+    line(c,0,252,800,252,'#8f9e91',7);line(c,0,301,800,301,'#73857b',4);for(let j=0;j<11;j++)rect(c,j*80,253,5,70,'#72857a');plant(c,84,328);plant(c,720,328);break;
+   case 'reception':
+    rect(c,64,75,660,175,'#624e3d');for(let j=0;j<15;j++)line(c,74+j*45,75,74+j*45,249,'#7b6951',2);c.fillStyle='#b3a17c';c.font='28px serif';c.fillText('HOTEL   NOSTALGIA',235,131);
+    rect(c,79,243,255,90,'#716148');rect(c,65,234,283,13,'#b2a385');rect(c,122,210,57,24,'#27352d');rect(c,142,232,10,10,'#27352d');rect(c,592,274,153,53,'#514c3e');plant(c,696,216);break;
+   case 'stairs':
+    rect(c,35,47,280,245,'#1c2c2b');for(let i=0;i<7;i++)rect(c,35,280-i*26,40+i*35,11,'#647269');for(let i=0;i<7;i++)rect(c,520+i*35,112+i*27,245-i*30,12,'#69786d');line(c,35,192,286,57,'#95a28f',5);line(c,500,58,780,265,'#95a28f',5);door(c,349,124,100,190);rect(c,369,90,64,18,'#6a9374');break;
+   case 'cafe':
+    for(let i=0;i<3;i++){rect(c,60+i*250,52,181,150,'#9b8e6d');rect(c,69+i*250,61,163,132,'#354d4c');line(c,151+i*250,61,151+i*250,193,'#8b8567',5);line(c,69+i*250,120,232+i*250,120,'#8b8567',4);}
+    for(let i=0;i<2;i++){ellipse(c,166+i*480,303,69,18,'#897555');rect(c,160+i*480,304,12,69,'#5b4d37');rect(c,112+i*480,327,35,16,'#71684c');rect(c,123+i*480,343,7,35,'#514b36');rect(c,157+i*480,279,15,18,'#c2b79a');}break;
+   case 'archive':
+    for(let j=0;j<3;j++){rect(c,58+j*250,51,190,252,'#59513f');for(let k=0;k<4;k++){rect(c,66+j*250,66+k*56,174,46,'#282d25');for(let l=0;l<8;l++){const h=25+(l*7+k*3)%18;rect(c,70+j*250+l*21,110+k*56-h,15,h,['#6d765e','#8a7a5c','#5c7169'][l%3]);}}}rect(c,84,312,155,12,'#817058');rect(c,96,324,9,48,'#5c503c');break;
+  }
+ }
+ function person(c,x,y,t,style,pose={}){
+  c.save();c.translate(x,y);c.scale(pose.dir||1,1);
+  const coat=style==='coat',dress=style==='target',guard=style==='guard';
+  const fall=pose.fall||0,ease=fall*fall*(3-2*fall);c.translate(ease*9,ease*4);c.rotate(ease*Math.PI*.475*(dress?-1:1));
+  const cloth=coat?'#101917':dress?'#9a8e9c':guard?'#3d555b':'#687568',skin=dress?'#c0b3a2':'#adbaa7';
+  const walk=pose.walk?Math.sin(t*5)*10:Math.sin(t*1.4+x)*1.6;
+  if(dress){ellipse(c,0,-119,19,23,'#536271');rect(c,-17,-116,34,33,'#536271');}
+  ellipse(c,0,-119,12,15,skin);
+  if(pose.faint){line(c,-10,-126,-17,-132,'#b7c0a0',2);}
+  c.fillStyle=cloth;c.beginPath();c.moveTo(-16,-99);c.lineTo(16,-99);c.lineTo(dress?28:coat?25:19,-34);c.lineTo(dress?-28:coat?-25:-19,-34);c.closePath();c.fill();
+  line(c,-9,-34,-11+walk,0,cloth,dress?7:10);line(c,9,-34,15-walk,0,cloth,dress?7:10);
+  line(c,-14,-89,-21,-49,cloth,9);
+  if(pose.attack){
+   const phase=pose.attack.phase,reach=Math.min(1,phase/.72);const handX=28+reach*60,handY=-137+reach*36;
+   line(c,14,-89,42,-108,cloth,9);line(c,42,-108,handX-8,handY,cloth,8);line(c,handX-8,handY,handX+6,handY,skin,6);
+  }else if(pose.gesture){
+   const g=pose.gesture,up=Math.sin(g.phase*Math.PI),theta=g.phase*Math.PI*2;
+   if(g.reason==='stretch'){const hx=36+Math.cos(theta)*23,hy=-104+Math.sin(theta)*29;line(c,14,-89,27,-101,cloth,9);line(c,27,-101,hx,hy,skin,7);}
+   else if(g.reason==='scratch'){line(c,14,-89,32,-110,cloth,9);line(c,32,-110,7+Math.sin(theta*3)*4,-140,skin,7);}
+   else if(g.reason==='point'){line(c,14,-89,37,-105,cloth,9);line(c,37,-105,58+up*7,-116,skin,7);line(c,59+up*7,-116,68+up*7,-119,skin,3);}
+   else if(g.reason==='reach'){line(c,14,-89,26,-101-up*25,cloth,9);line(c,26,-101-up*25,29,-107-up*56,skin,7);line(c,-14,-89,-26,-101-up*25,cloth,9);line(c,-26,-101-up*25,-29,-107-up*56,skin,7);}
+   else {line(c,14,-89,27,-110,cloth,9);line(c,27,-110,34+Math.sin(theta*2)*8,-126-up*17,skin,7);}
+  }
+  else if(pose.faint){line(c,14,-89,22,-120,cloth,8);line(c,22,-120,7,-128,skin,6);}
+  else line(c,14,-89,24-walk*.3,-48,cloth,9);
+  if(coat){line(c,-13,-96,0,-80,'#a3ac92',2);line(c,13,-96,0,-80,'#a3ac92',2);rect(c,-3,-129,6,6,'#46584c');}
+  if(guard){rect(c,-17,-139,34,7,'#263d40');rect(c,-11,-146,23,8,'#3d555b');rect(c,-8,-90,6,5,'#b8b190');}
+  c.restore();
+ }
+ function draw(canvas,cam,t,mark=false){
+  const c=canvas.getContext('2d'),s=sceneState(round,cam,t),sc=s.scene;c.clearRect(0,0,800,500);drawSet(c,sc);
+  // Background routines belong to each room, away from the contact between the pair.
+  if(sc.cast>0){const travel=sc.set==='corridor'?Math.sin(t*.35)*90:Math.sin(t*.6+cam)*20;person(c,130+travel,348,t,'guard',{dir:1,walk:sc.set==='corridor'});}
+  if(sc.cast>1){person(c,680+Math.sin(t*.5)*14,363,t+1,'civilian',{dir:-1,walk:round.level>=6});}
+  let actorX=s.pairX,targetX=actorX+sc.dir*s.separation;
+  const accident=s.event?.kind==='faint'?s.event:null,accidentTime=accident?t-accident.at:0;
+  if(accident?.reason==='slip'){ellipse(c,targetX,sc.y+5,32,7,'#8ea6ab55');line(c,targetX-18,sc.y+4,targetX+13,sc.y+4,'#9ab5b4',1);}
+  if(accident?.reason==='trip'){line(c,targetX-14,sc.y+2,targetX+21,sc.y+2,'#b4b29a',2);line(c,targetX+21,sc.y+2,targetX+11,sc.y-4,'#b4b29a',2);}
+  if(accident?.reason==='heel'&&accidentTime<0){rect(c,targetX-12,sc.y-2,5,8,'#c6ac8b');rect(c,targetX+12,sc.y-2,5,8,'#c6ac8b');}
+  // The attacking hand reaches the neck at x + 82, y - 101. The same target then falls.
+  person(c,targetX,sc.y,t+.5,'target',{dir:-sc.dir,fall:s.fall,faint:s.faint,walk:sc.pair==='cross'&&t<(s.event?s.event.at:6)});
+  person(c,actorX,sc.y,t,'coat',{dir:sc.dir,attack:s.attack,gesture:s.gesture,walk:sc.pair==='cross'&&t<(s.event?s.event.at:6)});
+  if(accident?.reason==='heel'&&accidentTime>=0){c.save();c.translate(targetX+sc.dir*(20+Math.min(1,accidentTime)*26),sc.y+6);c.rotate(Math.min(1,accidentTime)*2);rect(c,-3,-5,6,10,'#c6ac8b');c.restore();}
+  // Later levels add independent movement, without hiding the hands or the target's head.
+  if(round.level>=9&&sc.set!=='stairs'){person(c,90+((t*39+cam*93)%610),462,t+2,'civilian',{dir:1,walk:true});}
+  c.fillStyle='#00000012';for(let y=0;y<500;y+=4)c.fillRect(0,y,800,1);
+  c.fillStyle='#b7c6b4';c.font='15px monospace';c.fillText('CAM '+String(cam+1).padStart(2,'0')+'   '+Math.max(0,t).toFixed(3).padStart(7,'0')+' / '+sc.code,20,479);
+  if(mark&&s.attack){const neckX=targetX;c.strokeStyle='#d2f4a6';c.lineWidth=2;c.strokeRect(neckX-24,sc.y-147,48,71);c.fillStyle='#d2f4a6';c.font='17px sans-serif';c.fillText('手刀 → 首元',Math.max(12,neckX-65),sc.y-158);}
+ }
+ function renderReplay(){
+  if(!hasReplay())return;const cam=source==='answer'?round.cam:selected;draw($('replay'),cam,view,isResult()&&$('mark').checked);
+  const relative=view-(source==='answer'?round.at:stop);$('offset').textContent=(relative>=0?'+':'')+relative.toFixed(3)+' s / '+(source==='answer'?'手刀の開始':'停止時点');$('seek').value=view;
+  $('replayLabel').textContent=replayMode==='rewind'?'◀◀ REWIND':replayMode==='play'?'▶ REPLAY ×'+$('speed').value:'Ⅱ PAUSED';$('play').textContent=replayMode==='play'?'再生を停止':'再生';
+ }
+ function render(){canvases.forEach((c,i)=>draw(c,i,time));renderReplay();}
+ function tick(ts){const dt=last?Math.min((ts-last)/1000,.1):0;last=ts;
+  if(state==='live'&&!paused){time+=dt;if(time>=.6)document.querySelectorAll('.play-flash').forEach(el=>el.remove());if(guideActive&&time>=3){guideActive=false;document.querySelectorAll('.touch-guide').forEach(el=>el.remove());}if(time>round.end)fail('手刀を、見逃した。',true);else $('clock').textContent=time.toFixed(2)+' s';}
+  if(hasReplay()){
+   if(replayMode==='rewind'){view=Math.max(rangeFrom,view-dt*1.5);if(view<=rangeFrom){replayMode='';verdict();}}
+   else if(replayMode==='play'){view=Math.min(rangeTo,view+dt*Number($('speed').value));if(view>=rangeTo)replayMode='';}
+  }
+  render();requestAnimationFrame(tick);
+ }
+ function play(){if(!hasReplay()||replayMode==='rewind')return;if(view>=rangeTo)view=rangeFrom;replayMode=replayMode==='play'?'':'play';renderReplay();}
+ function step(dir){if(!hasReplay()||replayMode==='rewind')return;replayMode='';view=Math.max(rangeFrom,Math.min(rangeTo,view+dir/60));renderReplay();}
+ $('main').onclick=()=>{if(state==='ready')start();else if(state==='success'){level++;ready();start();}else{level=1;failures=0;reactions=[];score=0;earnedScore=0;penaltyPoints=0;streak=0;$('score').textContent='0';$('streak').textContent='0';ready();}};
+ $('retry').onclick=()=>{ready();start();};$('reset').onclick=finalizeRun;$('pause').onclick=togglePause;$('play').onclick=play;$('help').onclick=openTutorial;
+ $('tutorialPrev').onclick=()=>{if(tutorialStep>0){tutorialStep--;renderTutorial();}};$('tutorialNext').onclick=()=>{if(tutorialStep<TUTORIAL_STEPS.length-1){tutorialStep++;renderTutorial();}else closeTutorial();};$('tutorialSkip').onclick=closeTutorial;document.addEventListener('keydown',e=>{if(e.key==='Escape'&&!$('tutorial').classList.contains('off'))closeTutorial();});
+ $('restart').onclick=()=>{if(replayMode==='rewind')return;view=rangeFrom;replayMode='play';renderReplay();};$('prevFrame').onclick=()=>step(-1);$('nextFrame').onclick=()=>step(1);
+ $('seek').oninput=()=>{if(!hasReplay()||replayMode==='rewind')return;replayMode='';view=Math.max(rangeFrom,Math.min(rangeTo,Number($('seek').value)));controls();renderReplay();};$('showSelected').onclick=()=>setSource('selected');$('showAnswer').onclick=()=>setSource('answer');$('mark').onchange=renderReplay;
+ document.addEventListener('keydown',e=>{if(e.target.matches('input,select,button'))return;if(e.code==='Space'){e.preventDefault();if(state==='live')togglePause();else if(hasReplay())play();}else if(e.key==='ArrowLeft'&&hasReplay()){e.preventDefault();step(-1);}else if(e.key==='ArrowRight'&&hasReplay()){e.preventDefault();step(1);}else if(/^[1-9]$/.test(e.key)&&Number(e.key)<=LEVELS[level-1].n)capture(Number(e.key)-1);});
+ document.addEventListener('visibilitychange',()=>{if(document.hidden){if(state==='live'&&!paused)togglePause();if(replayMode==='play')replayMode='';}});
+ $('download').onclick=()=>{const rank=RANKS.find(item=>score>=item.min)||RANKS[RANKS.length-1],svg='<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="760" viewBox="0 0 1200 760"><rect width="1200" height="760" fill="#101413"/><rect x="35" y="35" width="1130" height="690" fill="none" stroke="#b6ef91" stroke-width="2"/><g fill="#e6eee7" text-anchor="middle" font-family="sans-serif"><text x="600" y="150" font-size="20" letter-spacing="5">OBSERVATION CERTIFICATE</text><text x="600" y="265" font-size="30">認定：'+rank.title+'</text><text x="600" y="370" font-size="42" fill="#b6ef91">SCORE '+score.toLocaleString('ja-JP')+' 点</text><text x="600" y="590" font-size="20">全10面クリア ／ ミス '+failures+'回</text><text x="600" y="660" font-size="15">UNOFFICIAL FAN PROTOTYPE</text></g></svg>';const link=document.createElement('a'),url=URL.createObjectURL(new Blob([svg],{type:'image/svg+xml'}));link.href=url;link.download='認定証.svg';link.click();setTimeout(()=>URL.revokeObjectURL(url),1000);};
+ ready();if(firstVisit)openTutorial();requestAnimationFrame(tick);
+})();
+
+
+</script>
+</html>
